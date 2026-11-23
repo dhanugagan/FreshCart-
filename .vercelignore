@@ -7,6 +7,5 @@ tests/temp
 *.db-shm
 *.db-wal
 .env
-flask-backend/__pycache__
-flask-backend/.pytest_cache
-freshcart-backend/target
+flask-backend
+freshcart-backend

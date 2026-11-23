@@ -1,0 +1,14 @@
+node_modules
+dist
+playwright-report
+test-results
+tests/temp
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.*
+!.env.example
+flask-backend/__pycache__
+flask-backend/.pytest_cache
+freshcart-backend/target
