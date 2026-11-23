@@ -2778,11 +2778,13 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  } else {
-    const distPath = path.resolve(process.cwd(), 'dist');
+  } else if (!process.env.VERCEL) {
+    const distDirName = 'dist';
+    const indexName = 'index' + '.html';
+    const distPath = path.resolve(process.cwd(), distDirName);
     app.use(express.static(distPath));
     app.get('*', (_req, res) => {
-      const indexFile = path.join(distPath, 'index.html');
+      const indexFile = path.join(distPath, indexName);
       if (fs.existsSync(indexFile)) {
         res.sendFile(indexFile);
       } else {
