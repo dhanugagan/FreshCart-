@@ -1,0 +1,6 @@
+{
+  "name": "FreshCart",
+  "description": "FreshCart — Groceries · Faster · Fresher. Animated grocery delivery platform with 5 rotating riders, 23 languages, 100 daily essentials in INR, Google Maps live tracking, and passcode-secured Admin.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

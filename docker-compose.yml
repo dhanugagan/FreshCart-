@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_PATH=/data/freshcart.db
+      - SESSION_SECRET=${SESSION_SECRET}
+    volumes:
+      - freshcart_data:/data
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: freshcart_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed-data.sql:/docker-entrypoint-initdb.d/02-seed.sql
+
+volumes:
+  freshcart_data:

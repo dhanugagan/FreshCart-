@@ -1,0 +1,32 @@
+{
+  "demoAccount": {
+    "email": "demo@freshcart.in",
+    "expectedName": "Riya Sharma (Demo)"
+  },
+  "googleTestUser": {
+    "email": "qa.automation.shopper@gmail.com",
+    "fullName": "QA Shopper"
+  },
+  "invalidCredentials": {
+    "email": "invalid-email-format",
+    "wrongEmail": "unknown.user@freshcart.in",
+    "password": "WrongPassword123!"
+  },
+  "priceTiers": {
+    "lowMax": 99,
+    "mediumMin": 100,
+    "mediumMax": 250,
+    "highMin": 251
+  },
+  "searchTerms": {
+    "validProduct": "Ghee",
+    "sqlInjectionProbe": "' OR '1'='1"
+  },
+  "couponCodes": {
+    "flatDiscount": "FRESH100"
+  },
+  "admin": {
+    "tooShortPasscode": "123",
+    "validBootstrapPasscode": "freshcart@admin"
+  }
+}

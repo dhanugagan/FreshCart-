@@ -1,0 +1,42 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f0fdf4;
+  color: #0f172a;
+}
+.shell {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+.card {
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+.hero h1 { margin: 0 0 0.4rem; color: #047857; }
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.filters button {
+  cursor: pointer;
+  border: 1px solid #10b981;
+  background: #ecfdf5;
+  color: #065f46;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+}
+.item h3 { margin: 0 0 0.35rem; font-size: 1rem; }
+.item p { margin: 0; font-size: 0.85rem; color: #475569; }

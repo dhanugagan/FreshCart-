@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --fc-bg: #fffdf7;
+    --fc-surface: #ffffff;
+    --fc-emerald: #10b981;
+    --fc-saffron: #f97316;
+    --fc-citrus: #eab308;
+    --fc-sky: #0ea5e9;
+  }
+
+  .dark {
+    --fc-bg: #07130f;
+    --fc-surface: #0d1d17;
+  }
+
+  body {
+    font-family:
+      'Plus Jakarta Sans',
+      'Noto Sans',
+      'Noto Sans Devanagari',
+      'Noto Sans Tamil',
+      'Noto Sans Telugu',
+      'Noto Sans Bengali',
+      'Noto Sans Gujarati',
+      'Noto Sans Kannada',
+      'Noto Sans Malayalam',
+      ui-sans-serif,
+      system-ui,
+      sans-serif;
+    background-color: var(--fc-bg);
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .dark body {
+    color: #f1f5f9;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom vibrant glass surfaces */
+.fc-glass {
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.dark .fc-glass {
+  background: rgba(13, 29, 23, 0.84);
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.28);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.5);
+}

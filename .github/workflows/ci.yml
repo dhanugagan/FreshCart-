@@ -1,0 +1,87 @@
+name: FreshCart Automated Testing & CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    name: 1. TypeScript Lint & Vite Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: freshcart-dist
+          path: dist/
+
+  python-flask-backend-tests:
+    name: 2. Python Flask & SQL API Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r flask-backend/requirements.txt
+      - run: pytest flask-backend/tests/test_flask_api.py -v
+
+  playwright-automation-suite:
+    name: 3. Playwright POM Automated E2E & API Tests
+    needs: lint-and-build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [api-integration, chromium-e2e, firefox-e2e, webkit-e2e]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run Playwright Tests (${{ matrix.project }})
+        run: npx playwright test --project=${{ matrix.project }}
+      - name: Upload Playwright HTML & JUnit Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: |
+            playwright-report/
+            tests/temp/
+
+  docker-container-verify:
+    name: 4. Docker Image Verification
+    needs: lint-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build FreshCart Docker Container
+        run: docker build -t freshcart-e2e:ci .
+
+  vercel-deploy:
+    name: 5. Deploy Full-Stack App to Vercel
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint-and-build, python-flask-backend-tests, playwright-automation-suite]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Vercel Production
+        if: env.VERCEL_TOKEN != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx --yes vercel --prod --yes --token="$VERCEL_TOKEN"

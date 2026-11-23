@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshCart Python Flask API Console</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="card hero">
+        <h1>FreshCart Python Flask &amp; SQL Explorer</h1>
+        <p>Live parameterized SQLite API inspection alongside automated test suites.</p>
+        <div class="filters">
+          <button type="button" data-tier="">All ₹</button>
+          <button type="button" data-tier="low">Low (&le; ₹99)</button>
+          <button type="button" data-tier="medium">Medium (₹100–₹250)</button>
+          <button type="button" data-tier="high">High (₹251+)</button>
+        </div>
+      </header>
+      <section id="catalog-grid" class="grid"></section>
+    </main>
+    <script>
+      async function loadProducts(tier) {
+        const qs = tier ? `?priceTier=${encodeURIComponent(tier)}` : '';
+        const res = await fetch(`/api/products${qs}`);
+        const data = await res.json();
+        const grid = document.getElementById('catalog-grid');
+        grid.replaceChildren();
+        data.items.slice(0, 24).forEach((item) => {
+          const card = document.createElement('article');
+          card.className = 'card item';
+          const title = document.createElement('h3');
+          title.textContent = item.name;
+          const meta = document.createElement('p');
+          meta.textContent = `${item.category_name} · ${item.unit} · ₹${item.effective_price}`;
+          card.append(title, meta);
+          grid.appendChild(card);
+        });
+      }
+      document.querySelectorAll('[data-tier]').forEach((btn) => {
+        btn.addEventListener('click', () => loadProducts(btn.getAttribute('data-tier') || ''));
+      });
+      loadProducts('');
+    </script>
+  </body>
+</html>
