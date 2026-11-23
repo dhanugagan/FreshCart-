@@ -46,7 +46,7 @@ export const RiderCompanion: React.FC<{ variant?: 'sidebar' | 'mobile-dock' }> =
       };
     }
     if (pathname.startsWith('/cart')) {
-      const remaining = Math.max(0, 499 - cart.subtotal);
+      const remaining = Math.max(0, (cart.freeDeliveryThreshold || 99) - cart.subtotal);
       return {
         mood: (cart.itemCount === 0 ? 'sad' : 'celebrate') as ScooterMood,
         tip:

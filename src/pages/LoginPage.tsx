@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Moon, RefreshCw, Sun, Volume2, VolumeX } from 'lucide-react';
 import { authService } from '../services/authService';
-import { extractApiError } from '../services/api';
+import { extractApiError, setAccessToken } from '../services/api';
 import { getSupabaseGoogleOAuthUrl, isSupabaseAuthEnabled } from '../lib/supabaseClient';
 import { useApp } from '../context/AppContext';
 import { scooterSound } from '../utils/scooterSound';
@@ -31,6 +31,7 @@ export const LoginPage: React.FC = () => {
   const [oauthConfigured, setOauthConfigured] = useState(false);
   const [supabaseEnabled] = useState(() => isSupabaseAuthEnabled());
   const [cachedGoogleAuthUrl, setCachedGoogleAuthUrl] = useState<string | null>(null);
+  const [googleCallbackUrl, setGoogleCallbackUrl] = useState<string>('');
   const [loggedInName, setLoggedInName] = useState<string | null>(null);
   const [entranceStage, setEntranceStage] = useState<EntranceStage>('camera-pan');
 
@@ -60,6 +61,7 @@ export const LoginPage: React.FC = () => {
       .getGoogleConfig()
       .then(async (cfg) => {
         setOauthConfigured(cfg.oauthConfigured);
+        if (cfg.callbackUrl) setGoogleCallbackUrl(cfg.callbackUrl);
         if (cfg.oauthConfigured && !supabaseEnabled) {
           try {
             const { url } = await authService.getGoogleAuthUrl();
@@ -72,19 +74,35 @@ export const LoginPage: React.FC = () => {
       .catch(() => {});
 
     const onMessage = async (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      const allowedOrigin =
+        event.origin === window.location.origin ||
+        event.origin.endsWith('.run.app') ||
+        event.origin.includes('localhost');
+      if (!allowedOrigin) return;
+
       if (event.data?.type === 'OAUTH_AUTH_SUCCESS') {
         setGoogleLoading(true);
-        const refreshed = await authService.refresh();
-        if (refreshed?.user) {
-          await setSessionUser(refreshed.user);
-          setLoggedInName(refreshed.user.fullName);
-        } else {
-          setLoggedInName('Shopper');
+        try {
+          if (event.data.accessToken && event.data.user) {
+            setAccessToken(event.data.accessToken);
+            await setSessionUser(event.data.user);
+            setLoggedInName(event.data.user.fullName);
+          } else {
+            const refreshed = await authService.refresh();
+            if (refreshed?.user) {
+              await setSessionUser(refreshed.user);
+              setLoggedInName(refreshed.user.fullName);
+            } else {
+              setLoggedInName('Shopper');
+            }
+          }
+          setGoogleSheetOpen(false);
+          scooterSound.playSuccessFanfare();
+          pushToast('success', 'Signed in with Google!');
+          setTimeout(() => navigate('/dashboard'), 900);
+        } finally {
+          setGoogleLoading(false);
         }
-        scooterSound.playSuccessFanfare();
-        pushToast('success', 'Signed in with Google!');
-        setTimeout(() => navigate('/dashboard'), 900);
       } else if (event.data?.type === 'OAUTH_AUTH_ERROR') {
         setGoogleLoading(false);
         setError(event.data?.message || 'Google authentication failed');
@@ -96,7 +114,7 @@ export const LoginPage: React.FC = () => {
       window.removeEventListener('message', onMessage);
       scooterSound.stopEngineLoop();
     };
-  }, [navigate, pushToast, setSessionUser]);
+  }, [navigate, pushToast, setSessionUser, supabaseEnabled]);
 
   useEffect(() => {
     if (soundOn && movingMarquee && !stoppedByTouch && entranceStage === 'settled') {
@@ -514,6 +532,7 @@ export const LoginPage: React.FC = () => {
             logoRevealed={entranceStage === 'thumbs-up' || entranceStage === 'settled'}
             googleSheetOpen={googleSheetOpen}
             oauthConfigured={oauthConfigured || supabaseEnabled}
+            googleCallbackUrl={googleCallbackUrl}
             onEmailChange={setEmail}
             onPasswordChange={setPassword}
             onTogglePassword={() => setShowPassword((s) => !s)}

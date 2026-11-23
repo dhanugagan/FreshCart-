@@ -49,7 +49,7 @@ function MapsQuotaBanner() {
   useEffect(() => {
     const handler = () => {
       setQuotaMessage(
-        'Google Maps free demo quota reached or key unavailable — interactive hub coordinate picker remains available.'
+        'Google Maps free demo quota exceeded or key unavailable — fallback interactive route simulation remains active.'
       );
     };
     window.addEventListener('gmp-quota-exceeded', handler);
@@ -60,9 +60,19 @@ function MapsQuotaBanner() {
 
   return (
     <div className="sticky top-0 z-50 flex items-center justify-between gap-3 border-b border-amber-300 bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-900 shadow-sm dark:border-amber-800 dark:bg-amber-950/90 dark:text-amber-200">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
-        <span>{quotaMessage}</span>
+        <span>
+          {quotaMessage}{' '}
+          <a
+            href="https://developers.google.com/maps/ai/ai-studio?utm_campaign=gmp_mcp_codeassist_v1_aistudio#quota_exceeded_errors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-amber-700 dark:hover:text-amber-100"
+          >
+            View quota details
+          </a>
+        </span>
       </div>
       <button
         type="button"
@@ -128,7 +138,7 @@ export default function App() {
 
   if (GOOGLE_MAPS_API_KEY) {
     return (
-      <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker']}>
+      <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'routes']}>
         {appTree}
       </APIProvider>
     );

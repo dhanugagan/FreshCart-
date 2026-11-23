@@ -92,23 +92,32 @@ function broadcastEvent(event: { type: string; userId?: number; orderId?: number
   }
 }
 
+function isHttpsRequest(res: express.Response): boolean {
+  const req = res.req;
+  if (!req) return Boolean(process.env.VERCEL);
+  const forwardedProto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+  return req.secure || forwardedProto === 'https';
+}
+
 function setSessionCookie(res: express.Response, token: string) {
+  const https = isHttpsRequest(res);
   res.cookie('fc_session', token, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    partitioned: true,
+    secure: https,
+    sameSite: https ? 'none' : 'lax',
+    ...(https ? { partitioned: true } : {}),
     maxAge: 1000 * 60 * 60 * 12,
     path: '/',
   });
 }
 
 function clearSessionCookie(res: express.Response) {
+  const https = isHttpsRequest(res);
   res.clearCookie('fc_session', {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    partitioned: true,
+    secure: https,
+    sameSite: https ? 'none' : 'lax',
+    ...(https ? { partitioned: true } : {}),
     path: '/',
   });
 }
@@ -185,7 +194,7 @@ function buildCartSnapshot(userId: number) {
     }
   }
 
-const FREE_DELIVERY_THRESHOLD = 499;
+const FREE_DELIVERY_THRESHOLD = 99;
 const DELIVERY_FEE = 39;
 
   const taxableBase = Math.max(0, subtotal - discountAmount);
@@ -520,8 +529,10 @@ function getGoogleCallbackUri(req: express.Request): string {
   if (appUrl && !appUrl.includes('MY_APP_URL')) {
     return `${appUrl.replace(/\/$/, '')}/api/auth/google/callback`;
   }
-  const proto = (req.headers['x-forwarded-proto'] as string) || req.protocol || 'https';
-  const host = (req.headers['x-forwarded-host'] as string) || req.headers.host || 'localhost:3000';
+  const rawProto = (req.headers['x-forwarded-proto'] as string) || req.protocol || 'https';
+  const rawHost = (req.headers['x-forwarded-host'] as string) || req.headers.host || 'localhost:3000';
+  const proto = rawProto.split(',')[0].trim();
+  const host = rawHost.split(',')[0].trim();
   return `${proto}://${host}/api/auth/google/callback`;
 }
 
@@ -615,11 +626,36 @@ app.get('/api/auth/google/url', (req, res) => {
 });
 
 const googleOAuthCallbackHandler = async (req: express.Request, res: express.Response) => {
+  const oauthErr = typeof req.query.error === 'string' ? req.query.error : '';
   const code = typeof req.query.code === 'string' ? req.query.code : '';
   const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+
+  const sendPopupError = (statusCode: number, message: string) => {
+    const payload = JSON.stringify({ type: 'OAUTH_AUTH_ERROR', message }).replace(/</g, '\\u003c');
+    res.status(statusCode).send(`
+      <!doctype html>
+      <html>
+        <body>
+          <script>
+            if (window.opener) {
+              window.opener.postMessage(${payload}, '*');
+              window.close();
+            }
+          </script>
+          <p>${message}</p>
+        </body>
+      </html>
+    `);
+  };
+
+  if (oauthErr) {
+    sendPopupError(400, 'Google Sign-In was cancelled or denied.');
+    return;
+  }
+
   if (!code || !clientId || !clientSecret) {
-    res.status(400).send('<html><body><p>Google Sign-In cancelled or missing configuration.</p></body></html>');
+    sendPopupError(400, 'Google Sign-In cancelled or OAuth credentials are missing.');
     return;
   }
 
@@ -637,7 +673,7 @@ const googleOAuthCallbackHandler = async (req: express.Request, res: express.Res
     });
     const tokenData = (await tokenRes.json()) as { access_token?: string };
     if (!tokenData.access_token) {
-      res.status(400).send('<html><body><p>Failed to exchange Google OAuth token.</p></body></html>');
+      sendPopupError(400, 'Failed to exchange Google OAuth token.');
       return;
     }
 
@@ -648,13 +684,13 @@ const googleOAuthCallbackHandler = async (req: express.Request, res: express.Res
     const email = sanitizeText(profile.email || '', 160).toLowerCase();
     const fullName = sanitizeText(profile.name || email.split('@')[0] || 'Google Shopper', 120);
     if (!email || !isValidEmail(email)) {
-      res.status(400).send('<html><body><p>Google account email unavailable.</p></body></html>');
+      sendPopupError(400, 'Google account email unavailable.');
       return;
     }
 
     const result = upsertGoogleCustomer(email, fullName);
     if ('error' in result && result.error) {
-      res.status(result.status ?? 403).send(`<html><body><p>${result.error}</p></body></html>`);
+      sendPopupError(result.status ?? 403, result.error);
       return;
     }
 
@@ -663,13 +699,20 @@ const googleOAuthCallbackHandler = async (req: express.Request, res: express.Res
     setSessionCookie(res, token);
     auditLog(result.userRow.id, 'GOOGLE_OAUTH_LOGIN', 'users', result.userRow.id, `Google OAuth sign-in`);
 
+    const userPublic = mapUserPublic(result.userRow);
+    const successPayload = JSON.stringify({
+      type: 'OAUTH_AUTH_SUCCESS',
+      accessToken: token,
+      user: userPublic,
+    }).replace(/</g, '\\u003c');
+
     res.send(`
       <!doctype html>
       <html>
         <body>
           <script>
             if (window.opener) {
-              window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS' }, '*');
+              window.opener.postMessage(${successPayload}, '*');
               window.close();
             } else {
               window.location.href = '/dashboard';
@@ -680,7 +723,7 @@ const googleOAuthCallbackHandler = async (req: express.Request, res: express.Res
       </html>
     `);
   } catch {
-    res.status(500).send('<html><body><p>Google Sign-In failed. Please close this popup and retry.</p></body></html>');
+    sendPopupError(500, 'Google Sign-In failed. Please close this popup and retry.');
   }
 };
 
@@ -1679,7 +1722,7 @@ app.post('/api/orders', requireAuth, (req: AuthedRequest, res) => {
 
       const taxableBase = Math.max(0, cartSnap.subtotal - discountAmount);
       const taxAmount = roundMoney(taxableBase * 0.05);
-      const deliveryFee = cartSnap.subtotal >= 499 ? 0 : 39;
+      const deliveryFee = cartSnap.subtotal >= 99 ? 0 : 39;
       const totalAmount = roundMoney(taxableBase + taxAmount + deliveryFee);
 
       const orderNumber = `FC-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
@@ -2708,16 +2751,30 @@ app.delete('/api/admin/coupons/:id', requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/health', (_req, res) => {
+  const supabaseConfigured = Boolean(process.env.SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim());
+  const oauthConfigured = Boolean(process.env.GOOGLE_CLIENT_ID?.trim() && process.env.GOOGLE_CLIENT_SECRET?.trim());
+  res.json({
+    ok: true,
+    service: 'FreshCart API',
+    runtime: process.env.VERCEL ? 'vercel-serverless' : 'node',
+    supabaseConfigured,
+    oauthConfigured,
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // ==========================================
 // VITE DEV MIDDLEWARE / PRODUCTION STATIC
 // ==========================================
 async function startServer() {
   const port = Number(process.env.PORT || 3000);
 
-  if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
+  if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
+    const viteModule = 'vite';
+    const { createServer: createViteServer } = await import(/* @vite-ignore */ viteModule);
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: { middlewareMode: true, allowedHosts: true },
       appType: 'spa',
     });
     app.use(vite.middlewares);

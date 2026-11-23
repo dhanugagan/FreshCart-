@@ -146,13 +146,15 @@ freshcart/
 │   ├── animations/ScooterBoy.tsx        # 5-rider SVG characters + Angry/Eat/Sleep/Ride moods
 │   ├── assets/brandAssets.ts            # FreshCart logo & "Uploading in a few mins..." image
 │   ├── components/
+│   │   ├── dashboard/
+│   │   │   └── DashboardScooterMarquee.tsx # Marquee dashboard scooter with touch lights, horn & engine SFX
 │   │   ├── login/
 │   │   │   ├── DeliveryBagPullSwitch.tsx# Pull-cord bag switch (starts closed by default)
 │   │   │   ├── LoginCard.tsx            # Auth card + Demo Login + Google OAuth / Picker
 │   │   │   ├── ScooterRide.tsx          # Sideways marquee motion & touch-to-stop braking
 │   │   │   ├── ScooterReaction.tsx      # Input/mood/cap reactive rider controller
 │   │   │   └── ScooterScene.tsx         # Town parallax scene + Move/Cap/Light/Moods bar
-│   │   ├── maps/FreshCartMaps.tsx       # Google Maps address picker & live route map
+│   │   ├── maps/FreshCartMaps.tsx       # Google Maps picker, Routes API polyline & live vehicle sim
 │   │   ├── ProductCard.tsx              # Product card with upload-pending placeholder fallback
 │   │   └── RiderCompanion.tsx           # Persistent interactive sidebar/dock companion
 │   ├── i18n/languages.ts                # 23 languages + localized copy
@@ -172,7 +174,7 @@ freshcart/
 │   │   ├── CartAndCheckoutPage.ts       # Basket, coupons & orders POM
 │   │   └── AdminPage.ts                 # Admin passcode gate POM
 │   ├── specs/
-│   │   ├── api-functional.api.spec.ts   # 7 API, SQLi, RBAC & catalog integration specs
+│   │   ├── api-functional.api.spec.ts   # 9 API, SQLi, RBAC, OAuth config & storage integration specs
 │   │   ├── 01-login-bag-and-rider.e2e.spec.ts
 │   │   ├── 02-catalog-tiers-and-search.e2e.spec.ts
 │   │   └── 03-cart-checkout-and-admin.e2e.spec.ts
@@ -210,11 +212,11 @@ freshcart/
 ## 8. Application Under Test (AUT) & Modules Tested
 
 FreshCart provides end-to-end grocery shopping workflows evaluated under automation:
-1. **Authentication & Session Bag Module (`/login`, `/logout`, `/register`)**: Closed-by-default Delivery Bag pull-cord switch, Google OAuth / quick sign-in, 1-click Demo Customer (`demo@freshcart.in`), email/password validation, JWT cookies + Bearer headers.
-2. **Interactive Rider Animation Stage**: 5 rotating delivery riders (`Boy 1/5`–`Boy 5/5` without `#`), sideways marquee bike movement with touch-to-stop braking, headlight switch, removable cap -> angry state, audio synthesizer, and emotion selector.
+1. **Authentication & Session Bag Module (`/login`, `/logout`, `/register`, `/auth/callback`)**: Closed-by-default Delivery Bag pull-cord switch, Google OAuth popup + Supabase Auth + quick sign-in, 1-click Demo Customer (`demo@freshcart.in`), email/password validation, JWT cookies + Bearer headers.
+2. **Interactive Rider Animation Stage & Dashboard Marquee**: 5 rotating delivery riders (`Boy 1/5`–`Boy 5/5` without `#`), Login sideways bike movement with touch-to-stop braking, removable cap -> angry state, plus a **Dashboard Marquee Scooter (`DashboardScooterMarquee`)** sliding across the screen with interactive touch triggers for **Headlight On/Off**, **Horn (`Beep-Beep`)**, and **Engine Rev / Continuous Engine Sound**.
 3. **Catalog, Upload Placeholders & Price Tiers (`/shop`, `/search`, `/products/:id`)**: 100 grocery items across 10 aisles, **"Uploading in a few mins..."** image fallback, **Low (≤ ₹99)**, **Medium (₹100–₹250)**, and **High (₹251+)** filters, parameterized search.
-4. **Shopping Cart, Wishlist & Coupons (`/cart`, `/wishlist`, `/coupons`)**: Persistent cart items, free delivery above `₹499`, coupon validation (`FRESH100`), 5% GST calculation.
-5. **Checkout, Orders & Live Map Tracking (`/checkout`, `/payment`, `/orders`, `/tracking/:id`, `/addresses`)**: Google Maps GPS pinning, payment checkout, WebSocket scooter progress updates.
+4. **Shopping Cart, Wishlist & Coupons (`/cart`, `/wishlist`, `/coupons`)**: Persistent cart items, free delivery above `₹99`, coupon validation (`FRESH100`), 5% GST calculation.
+5. **Checkout, Orders & Live Map Tracking (`/checkout`, `/payment`, `/orders`, `/tracking/:id`, `/addresses`)**: Google Maps GPS pinning, explicit browser geolocation (**Use My Current Location**), modern Google Maps Routes API (`Route.computeRoutes()`), and a **simulated delivery vehicle animation** moving across the map with Play/Pause/Speed/Replay + WebSocket updates.
 6. **Profile, Notifications & Admin Console (`/profile`, `/notifications`, `/admin`)**: Multilingual switcher (23 languages), single & bulk notification deletion, scrypt-hashed first-run Admin Passcode setup & unlock.
 
 ---
@@ -295,6 +297,8 @@ FreshCart provides end-to-end grocery shopping workflows evaluated under automat
 | **TC-API-05** | Google RBAC | Sign in via `POST /api/auth/google`, then request `/api/admin/analytics` | `qa.automation.shopper@gmail.com` | Assigns `CUSTOMER` role only; Admin endpoint returns `403` | **Passed** |
 | **TC-API-06** | Admin Status | Inspect `GET /api/auth/admin/status` | N/A | Returns readiness JSON without unconfigured secret deadlock | **Passed** |
 | **TC-API-07** | Negative Auth | Submit unknown email & password to `POST /api/auth/login` | `unknown.user@freshcart.in` | Rejects cleanly with HTTP `401` error | **Passed** |
+| **TC-API-08** | Google OAuth | Inspect `GET /api/auth/google/config` & bad `POST /api/auth/supabase` | N/A | Returns `/api/auth/google/callback` + `/auth/callback`; rejects empty token (`400`) | **Passed** |
+| **TC-API-09** | Storage Docs | Upload, list, isolate cross-user delete (`404`), and owner delete docs | `DELIVERY_INSTRUCTION` | Enforces owner-scoped document lifecycle cleanly | **Passed** |
 | **TC-UI-01** | Login Bag | Open `/login`, check closed state, click open tie, click close tie | `initialOpen=false` | Card hidden initially; reveals Google Sign-In on open; folds on close | **Ready (CI)** |
 | **TC-UI-02** | Hero & Demo | Click `1-Click Demo Login`, assert `/dashboard` headline | `demo@freshcart.in` | Displays `"Daily Groceries at Your Doorstep in Minutes"` (no `Razorpay UPI`) | **Ready (CI)** |
 | **TC-UI-03** | Rider Stage | Click Rider Switch, Move Bike, Remove Cap, Toggle Light | `Boy 1/5`–`5/5` | No `#` in label; bike moves & pauses on touch; angry mood without cap | **Ready (CI)** |
@@ -436,9 +440,11 @@ This repository includes **`vercel.json`**, **`api/index.ts`**, **`api/health.ts
 3. Configure Environment Variables in **Vercel Project Settings → Environment Variables**:
    - `VITE_SUPABASE_URL` & `VITE_SUPABASE_ANON_KEY` *(Browser Supabase Auth)*
    - `SUPABASE_URL` & `SUPABASE_SERVICE_ROLE_KEY` *(Server JWT verification, Postgres mirror & Storage uploads)*
-   - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` *(Optional direct Google OAuth alongside Supabase)*
+   - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` *(Real Google OAuth Sign-In — register `<your-app-url>/api/auth/google/callback` in Google Cloud Console)*
+   - `APP_URL` *(Public base URL used for OAuth redirect URI resolution)*
+   - `SESSION_SECRET` *(JWT HMAC signing secret)*
    - `ADMIN_PASSCODE` *(Admin unlock passcode — or claim securely on first visit to `/admin`)*
-   - `VITE_GOOGLE_MAPS_API_KEY` *(Live Google Maps tracking)*
+   - `VITE_GOOGLE_MAPS_API_KEY` *(Live Google Maps tracking & Routes API)*
 4. Click **Deploy** — both frontend (`dist/`) and stateless serverless functions (`/api/index.ts`, `/api/health.ts`) deploy cleanly with zero errors.
 
 ### F. Run Python Flask Companion Backend & Container (Docker)

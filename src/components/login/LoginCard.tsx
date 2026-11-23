@@ -24,6 +24,7 @@ interface LoginCardProps {
   logoRevealed: boolean;
   googleSheetOpen?: boolean;
   oauthConfigured?: boolean;
+  googleCallbackUrl?: string;
   onEmailChange: (v: string) => void;
   onPasswordChange: (v: string) => void;
   onTogglePassword: () => void;
@@ -52,6 +53,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
   logoRevealed,
   googleSheetOpen = false,
   oauthConfigured = false,
+  googleCallbackUrl = '',
   onEmailChange,
   onPasswordChange,
   onTogglePassword,
@@ -269,7 +271,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
-              {oauthConfigured && (
+              {oauthConfigured ? (
                 <button
                   type="button"
                   disabled={googleLoading}
@@ -278,6 +280,13 @@ export const LoginCard: React.FC<LoginCardProps> = ({
                 >
                   Launch Real Google OAuth Popup
                 </button>
+              ) : (
+                googleCallbackUrl && (
+                  <div className="mb-2.5 rounded-lg border border-sky-200 bg-white/80 p-2 text-[10px] text-slate-600 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300">
+                    <span className="font-bold text-sky-900 dark:text-sky-300">Live Google OAuth Callback URI:</span>{' '}
+                    <code className="break-all font-mono text-[10px]">{googleCallbackUrl}</code>
+                  </div>
+                )
               )}
               <div className="space-y-2">
                 <p className="text-[11px] text-sky-900/80 dark:text-sky-300/80">

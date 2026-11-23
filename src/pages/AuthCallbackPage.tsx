@@ -39,7 +39,10 @@ export const AuthCallbackPage: React.FC = () => {
         setMessage(`Welcome back, ${exchanged.user.fullName}!`);
 
         if (window.opener && window.opener !== window) {
-          window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS' }, window.location.origin);
+          window.opener.postMessage(
+            { type: 'OAUTH_AUTH_SUCCESS', accessToken: exchanged.accessToken, user: exchanged.user },
+            '*'
+          );
           setTimeout(() => window.close(), 350);
         } else {
           setTimeout(() => navigate('/dashboard', { replace: true }), 650);
@@ -50,7 +53,7 @@ export const AuthCallbackPage: React.FC = () => {
         setStatus('error');
         setMessage(msg);
         if (window.opener && window.opener !== window) {
-          window.opener.postMessage({ type: 'OAUTH_AUTH_ERROR', message: msg }, window.location.origin);
+          window.opener.postMessage({ type: 'OAUTH_AUTH_ERROR', message: msg }, '*');
         }
       }
     })();

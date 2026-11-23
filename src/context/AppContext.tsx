@@ -62,7 +62,7 @@ const EMPTY_CART: CartSnapshot = {
   appliedCoupon: null,
   taxAmount: 0,
   deliveryFee: 0,
-  freeDeliveryThreshold: 499,
+  freeDeliveryThreshold: 99,
   totalAmount: 0,
 };
 

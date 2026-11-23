@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { ScooterBoy } from '../animations/ScooterBoy';
 import { AnimatedPageTransition, LoadingAnimation } from '../animations/MotionPrimitives';
 import { ProductCard } from '../components/ProductCard';
+import { DashboardScooterMarquee } from '../components/dashboard/DashboardScooterMarquee';
 import { productService } from '../services/productService';
 import { useApp } from '../context/AppContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -212,6 +213,9 @@ export const DashboardPage: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* Interactive Marquee Animated Scooter Track */}
+        <DashboardScooterMarquee />
 
         {/* Categories Strip */}
         <section>

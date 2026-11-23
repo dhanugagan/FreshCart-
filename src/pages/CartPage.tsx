@@ -17,7 +17,7 @@ export const CartPage: React.FC = () => {
   const [couponInput, setCouponInput] = useState(cart.appliedCoupon || '');
   const [busyId, setBusyId] = useState<number | null>(null);
 
-  const freeThreshold = cart.freeDeliveryThreshold || 499;
+  const freeThreshold = cart.freeDeliveryThreshold || 99;
 
   if (!user) {
     return (

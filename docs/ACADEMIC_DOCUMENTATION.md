@@ -1,15 +1,15 @@
 # FreshCart — Academic Project & Automated Testing Documentation
 
 ## 1. Project Abstract
-FreshCart is a full-stack online grocery shopping platform combining an expressive animated user interface (featuring a reactive scooter delivery character) with transactional backend workflows, role-based access control, real-time WebSocket delivery tracking, and an integrated 53-case automated end-to-end and security test suite.
+FreshCart is a full-stack online grocery shopping platform combining an expressive animated user interface (featuring a 5-rider reactive scooter delivery character, a dashboard marquee scooter with touch lights/horn/engine SFX, and free delivery above ₹99) with transactional backend workflows, role-based access control, real Google OAuth sign-in, real-time geolocation + Google Maps Routes API delivery tracking with simulated vehicle animation, WebSocket updates, and automated Playwright + Pytest test suites.
 
 ## 2. System Architecture
 ```mermaid
 flowchart LR
-  UI[React 19 + Vite + Tailwind + Motion] -->|REST / JSON + Bearer Auth| API[Express / Spring Boot API Layer]
+  UI[React 19 + Vite + Tailwind + Motion] -->|REST / JSON + Bearer Auth| API[Express / Serverless / Spring Boot API]
   UI <-->|WebSocket /ws| WS[Real-Time Tracking & Notification Hub]
-  API -->|Parameterized SQL / Transactions| DB[(SQLite / MySQL freshcart_db)]
-  QA[Automated QA Runner / Selenium + TestNG] -->|Live HTTP + DB Assertions| API
+  API -->|Parameterized SQL / Transactions| DB[(SQLite / PostgreSQL freshcart_db)]
+  QA[Playwright POM + Pytest Suites] -->|Live HTTP + E2E Assertions| API
 ```
 
 ## 3. Entity Relationship Diagram (21 Tables)

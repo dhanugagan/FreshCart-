@@ -8,7 +8,7 @@ export class AdminPagePOM extends BasePage {
   constructor(page: Page) {
     super(page);
     this.passcodeInput = page.getByTestId('admin-passcode-input');
-    this.unlockButton = page.getByTestId('admin-unlock-btn');
+    this.unlockButton = page.getByTestId('admin-auth-submit');
   }
 
   async open(): Promise<void> {
