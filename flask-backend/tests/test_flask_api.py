@@ -1,8 +1,13 @@
 import os
 import sqlite3
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+FLASK_BACKEND_DIR = Path(__file__).resolve().parent.parent
+if str(FLASK_BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(FLASK_BACKEND_DIR))
 
 from app import app
 

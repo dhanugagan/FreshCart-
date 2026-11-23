@@ -9,9 +9,9 @@ export class ShopPagePOM extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.lowTierButton = page.getByRole('button', { name: /Low/i });
-    this.mediumTierButton = page.getByRole('button', { name: /Medium/i });
-    this.highTierButton = page.getByRole('button', { name: /High/i });
+    this.lowTierButton = page.getByTestId('shop-price-tier-low');
+    this.mediumTierButton = page.getByTestId('shop-price-tier-medium');
+    this.highTierButton = page.getByTestId('shop-price-tier-high');
     this.searchInput = page.getByPlaceholder(/Search/i).first();
   }
 
