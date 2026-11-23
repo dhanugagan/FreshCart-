@@ -1,5 +1,5 @@
 node_modules
-dist
+bun.lock
 playwright-report
 test-results
 tests/temp
