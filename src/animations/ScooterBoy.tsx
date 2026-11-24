@@ -226,7 +226,7 @@ export const ScooterBoy: React.FC<ScooterBoyProps> = ({
         viewBox="0 0 360 270"
         onClick={handleRiderClick}
         whileTap={interactive && !reduced ? { scale: 0.97 } : undefined}
-        className={`h-auto w-full max-w-[360px] drop-shadow-[0_22px_28px_rgba(15,23,42,0.18)] ${
+        className={`h-auto w-full max-w-[360px] ${
           interactive ? 'cursor-pointer' : ''
         }`}
         animate={

@@ -1,0 +1,486 @@
+ 1 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:8:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-01: Delivery bag ALWAYS starts closed and opens Google Sign-In on pull (28.7s)
+  ✘  3 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:61:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-04: Invalid email submission displays validation error banner (28.5s)
+  ✘  4 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:25:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-02: 1-Click Demo Customer Login navigates to clean Dashboard without India/Razorpay hero copy (29.7s)
+  ✓  2 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:38:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-03: Rider switcher cycles without # symbol & interactive Bike Move/Cap/Light controls respond (32.7s)
+  ✘  5 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:73:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-05: Landing page loads cleanly with primary CTA and Google login keeps drawer usable (20.2s)
+  ✘  6 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:8:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-01: Delivery bag ALWAYS starts closed and opens Google Sign-In on pull (retry #1) (19.8s)
+  ✘  8 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:25:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-02: 1-Click Demo Customer Login navigates to clean Dashboard without India/Razorpay hero copy (retry #1) (22.0s)
+  ✘  7 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:61:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-04: Invalid email submission displays validation error banner (retry #1) (22.9s)
+  ✘  10 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:8:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-01: Delivery bag ALWAYS starts closed and opens Google Sign-In on pull (retry #2) (18.1s)
+  ✘  9 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:73:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-05: Landing page loads cleanly with primary CTA and Google login keeps drawer usable (retry #1) (20.5s)
+  ✘  12 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:61:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-04: Invalid email submission displays validation error banner (retry #2) (17.1s)
+  ✓  15 [webkit-e2e] › tests/specs/02-catalog-tiers-and-search.e2e.spec.ts:24:3 › Catalog, Upload Placeholder, Price Tiers & Route Mocking Suite › TC-CAT-02: Playwright route interception gracefully verifies catalog outage resilience (4.8s)
+  ✘  11 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:25:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-02: 1-Click Demo Customer Login navigates to clean Dashboard without India/Razorpay hero copy (retry #2) (34.6s)
+  ✓  13 [webkit-e2e] › tests/specs/02-catalog-tiers-and-search.e2e.spec.ts:9:3 › Catalog, Upload Placeholder, Price Tiers & Route Mocking Suite › TC-CAT-01: Shop displays "Uploading in a few mins..." visual and Low/Medium/High price tier filters work (23.0s)
+  ✓  17 [webkit-e2e] › tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:26:3 › Cart, Logout Bag & Admin Passcode Gate E2E Suite › TC-ADMIN-01: Admin Guard renders passcode setup/unlock form without missing-secret deadlock (5.8s)
+  ✘  16 [webkit-e2e] › tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:8:3 › Cart, Logout Bag & Admin Passcode Gate E2E Suite › TC-FLOW-01: Demo user cart, order history & closed-by-default Logout bag flow (16.1s)
+  ✓  14 [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:73:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-05: Landing page loads cleanly with primary CTA and Google login keeps drawer usable (retry #2) (23.5s)
+  ✓  18 [webkit-e2e] › tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:8:3 › Cart, Logout Bag & Admin Passcode Gate E2E Suite › TC-FLOW-01: Demo user cart, order history & closed-by-default Logout bag flow (retry #1) (9.0s)
+
+
+  1) [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:8:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-01: Delivery bag ALWAYS starts closed and opens Google Sign-In on pull 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:17:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:17:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:17:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-6e63e-pens-Google-Sign-In-on-pull-webkit-e2e-retry2/error-context.md
+
+  2) [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:25:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-02: 1-Click Demo Customer Login navigates to clean Dashboard without India/Razorpay hero copy 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at LoginPagePOM.triggerDemoLogin (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:52:5)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:30:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at LoginPagePOM.triggerDemoLogin (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:52:5)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:30:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByTestId('demo-login-btn')
+        - locator resolved to <button type="button" data-testid="demo-login-btn" class="inline-flex items-center gap-1 rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-200">…</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting for element to be visible, enabled and stable
+      - element was detached from the DOM, retrying
+
+
+       at ../pom/LoginPage.ts:53
+
+      51 |   async triggerDemoLogin(): Promise<void> {
+      52 |     await this.openDeliveryBag();
+    > 53 |     await this.demoLoginButton.click();
+         |                                ^
+      54 |   }
+      55 | }
+      56 |
+        at LoginPagePOM.triggerDemoLogin (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:53:32)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:30:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-a8386-ut-India-Razorpay-hero-copy-webkit-e2e-retry2/error-context.md
+
+  3) [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:61:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-04: Invalid email submission displays validation error banner 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:64:5
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:64:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:64:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-9baed-ays-validation-error-banner-webkit-e2e-retry2/error-context.md
+
+  4) [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:73:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-05: Landing page loads cleanly with primary CTA and Google login keeps drawer usable 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:84:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/01-login-bag-and-rider.e2e.spec.ts:84:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e-retry1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace tests/temp/artifacts/01-login-bag-and-rider.e2e-27cea-e-login-keeps-drawer-usable-webkit-e2e-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [webkit-e2e] › tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:8:3 › Cart, Logout Bag & Admin Passcode Gate E2E Suite › TC-FLOW-01: Demo user cart, order history & closed-by-default Logout bag flow 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('login-email')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('login-email') with timeout 5000ms
+      - waiting for getByTestId('login-email')
+
+
+       at ../pom/LoginPage.ts:43
+
+      41 |     await expect(this.bagReopenButton).toBeVisible();
+      42 |     await this.bagReopenButton.click();
+    > 43 |     await expect(this.emailInput).toBeVisible();
+         |                                   ^
+      44 |   }
+      45 |
+      46 |   async closeDeliveryBag(): Promise<void> {
+        at LoginPagePOM.openDeliveryBag (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:43:35)
+        at LoginPagePOM.triggerDemoLogin (/home/runner/work/FreshCart-/FreshCart-/tests/pom/LoginPage.ts:52:5)
+        at /home/runner/work/FreshCart-/FreshCart-/tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:15:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests/temp/artifacts/03-cart-checkout-and-admin-a33b8--by-default-Logout-bag-flow-webkit-e2e/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    tests/temp/artifacts/03-cart-checkout-and-admin-a33b8--by-default-Logout-bag-flow-webkit-e2e/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests/temp/artifacts/03-cart-checkout-and-admin-a33b8--by-default-Logout-bag-flow-webkit-e2e/error-context.md
+
+  3 failed
+    [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:8:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-01: Delivery bag ALWAYS starts closed and opens Google Sign-In on pull 
+    [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:25:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-02: 1-Click Demo Customer Login navigates to clean Dashboard without India/Razorpay hero copy 
+    [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:61:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-04: Invalid email submission displays validation error banner 
+  2 flaky
+    [webkit-e2e] › tests/specs/01-login-bag-and-rider.e2e.spec.ts:73:3 › Login Bag, Google Auth & Interactive Delivery Boy Suite › TC-UI-05: Landing page loads cleanly with primary CTA and Google login keeps drawer usable 
+    [webkit-e2e] › tests/specs/03-cart-checkout-and-admin.e2e.spec.ts:8:3 › Cart, Logout Bag & Admin Passcode Gate E2E Suite › TC-FLOW-01: Demo user cart, order history & closed-by-default Logout bag flow 
+  4 passed (1.9m)
+Error: Process completed with exit code 1.

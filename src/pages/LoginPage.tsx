@@ -36,7 +36,6 @@ export const LoginPage: React.FC = () => {
   const [entranceStage, setEntranceStage] = useState<EntranceStage>('camera-pan');
 
   const [soundOn, setSoundOn] = useState(false);
-  const [parallax, setParallax] = useState({ x: 0, y: 0, headlight: 0.72 });
   const [boxOpen, setBoxOpen] = useState(false);
   const [revving, setRevving] = useState(false);
   const [headlightOn, setHeadlightOn] = useState(true);
@@ -135,15 +134,6 @@ export const LoginPage: React.FC = () => {
     const next = !soundOn;
     setSoundOn(next);
     scooterSound.setEnabled(next);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const nx = (e.clientX - rect.left) / rect.width - 0.5;
-    const ny = (e.clientY - rect.top) / rect.height - 0.5;
-    const distFromRider = Math.hypot(nx + 0.15, ny - 0.15);
-    const headlight = Math.max(0.45, Math.min(1, 1.15 - distFromRider));
-    setParallax({ x: nx * 24, y: ny * 16, headlight });
   };
 
   const handleHonk = () => {
@@ -394,7 +384,6 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div
-      onMouseMove={handleMouseMove}
       className="relative flex min-h-screen flex-col overflow-hidden bg-sky-100 lg:flex-row dark:bg-[#07110C]"
     >
       {/* Top-Right Scene Controls */}
@@ -435,8 +424,8 @@ export const LoginPage: React.FC = () => {
       {/* LEFT SECTION — 60% */}
       <section className="relative w-full lg:w-[60%]">
         <ScooterScene
-          parallaxX={parallax.x}
-          parallaxY={parallax.y}
+          parallaxX={0}
+          parallaxY={0}
           celebrating={loginSuccess}
           darkMode={darkMode}
           onToggleTheme={toggleDarkMode}
@@ -472,7 +461,7 @@ export const LoginPage: React.FC = () => {
               error={error}
               loading={loading || demoLoading || googleLoading}
               loginSuccess={loginSuccess}
-              headlightIntensity={parallax.headlight}
+              headlightIntensity={0.88}
               headlightOn={headlightOn}
               hasCap={hasCap}
               manualMood={manualMood}

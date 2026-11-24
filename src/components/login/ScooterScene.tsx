@@ -134,7 +134,7 @@ export const ScooterScene: React.FC<ScooterSceneProps> = ({
 
       {/* Atmospheric Glow */}
       <div
-        className="pointer-events-none absolute -top-24 -left-16 h-80 w-80 rounded-full bg-amber-200/55 blur-3xl dark:bg-emerald-500/15"
+        className="pointer-events-none absolute -top-24 -left-16 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(253,230,138,0.48)_0%,transparent_70%)] dark:bg-[radial-gradient(circle,rgba(16,185,129,0.16)_0%,transparent_70%)]"
         aria-hidden="true"
       />
 

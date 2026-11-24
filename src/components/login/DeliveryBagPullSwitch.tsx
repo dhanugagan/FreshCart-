@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { ShoppingBag, Sparkles } from 'lucide-react';
 import { freshCartLogo } from '../../assets/brandAssets';
 import { scooterSound } from '../../utils/scooterSound';
@@ -91,52 +91,47 @@ export const DeliveryBagPullSwitch: React.FC<DeliveryBagPullSwitchProps> = ({
       {isOpen && (
         <div
           aria-hidden="true"
-          className="pointer-events-none h-2 w-[92%] bg-gradient-to-b from-amber-300/45 to-transparent blur-[2px]"
+          className="pointer-events-none h-2 w-[92%] bg-gradient-to-b from-amber-300/45 to-transparent"
         />
       )}
 
-      {/* Collapsible / Unfolding Bag Contents */}
-      <AnimatePresence mode="wait" initial={false}>
-        {isOpen ? (
-          <motion.div
-            key="bag-open"
-            initial={reduced ? false : { opacity: 0, scaleY: 0.9, y: -10 }}
-            animate={{ opacity: 1, scaleY: 1, y: 0 }}
-            exit={{ opacity: 0, scaleY: 0.88, y: -12 }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            style={{ originY: 0 }}
-            className="w-full"
-          >
-            <div className="[&>div]:rounded-t-none [&>div]:border-t-0">{children}</div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="bag-closed"
-            initial={reduced ? false : { opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.96 }}
-            transition={{ duration: 0.22 }}
-            className="w-full rounded-b-3xl border border-t-0 border-emerald-300/70 bg-gradient-to-b from-emerald-900/95 via-emerald-950 to-slate-950 p-7 text-center text-white shadow-xl"
-          >
-            {/* Tied Kraft / Insulated Bag Drawstring Illustration */}
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-amber-300/40 bg-emerald-800/70 shadow-inner">
-              <ShoppingBag className="h-10 w-10 text-amber-300" />
-            </div>
-            <h2 className="font-display text-lg font-extrabold text-amber-200">Bag Tied Shut</h2>
-            <p className="mt-1.5 text-xs text-emerald-100/80">{closedLabel}</p>
+      {/* Collapsible / Unfolding Bag Contents (synchronous swap avoids WebKit AnimatePresence stalls) */}
+      {isOpen ? (
+        <motion.div
+          key="bag-open"
+          initial={reduced ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.16 }}
+          className="w-full"
+        >
+          <div className="[&>div]:rounded-t-none [&>div]:border-t-0">{children}</div>
+        </motion.div>
+      ) : (
+        <motion.div
+          key="bag-closed"
+          initial={reduced ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.16 }}
+          className="w-full rounded-b-3xl border border-t-0 border-emerald-300/70 bg-gradient-to-b from-emerald-900/95 via-emerald-950 to-slate-950 p-7 text-center text-white shadow-xl"
+        >
+          {/* Tied Kraft / Insulated Bag Drawstring Illustration */}
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-amber-300/40 bg-emerald-800/70 shadow-inner">
+            <ShoppingBag className="h-10 w-10 text-amber-300" />
+          </div>
+          <h2 className="font-display text-lg font-extrabold text-amber-200">Bag Tied Shut</h2>
+          <p className="mt-1.5 text-xs text-emerald-100/80">{closedLabel}</p>
 
-            <button
-              type="button"
-              onClick={handlePull}
-              data-testid="bag-reopen-btn"
-              className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 text-xs font-extrabold text-emerald-950 shadow-md transition hover:bg-amber-300"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span>{openCtaLabel}</span>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <button
+            type="button"
+            onClick={handlePull}
+            data-testid="bag-reopen-btn"
+            className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 text-xs font-extrabold text-emerald-950 shadow-md transition hover:bg-amber-300"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>{openCtaLabel}</span>
+          </button>
+        </motion.div>
+      )}
     </div>
   );
 };

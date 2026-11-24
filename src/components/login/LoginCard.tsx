@@ -67,27 +67,11 @@ export const LoginCard: React.FC<LoginCardProps> = ({
 }) => {
   const reduced = useReducedMotion();
   const { language, setLanguage, languages, t } = useLanguage();
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const [googleEmail, setGoogleEmail] = useState('aarav.sharma@gmail.com');
   const [googleName, setGoogleName] = useState('Aarav Sharma');
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reduced) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rx: -py * 4.5, ry: px * 4.5 });
-  };
-
   return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
-      animate={reduced ? undefined : { rotateX: tilt.rx, rotateY: tilt.ry }}
-      transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-      style={{ transformPerspective: 1000 }}
-      className="relative w-full max-w-md rounded-3xl border border-white/80 bg-white/92 p-7 shadow-[0_24px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl sm:p-9 dark:border-emerald-900/50 dark:bg-[#0D1D17]/94"
-    >
+    <div className="relative w-full max-w-md rounded-3xl border border-white/80 bg-white/95 p-7 shadow-[0_24px_60px_rgba(15,23,42,0.14)] sm:p-9 dark:border-emerald-900/50 dark:bg-[#0D1D17]/95">
       {/* Brand + Language Selector */}
       <motion.div
         initial={reduced ? false : { opacity: 0, y: -8, scale: 0.95 }}
@@ -208,9 +192,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
               </button>
             </div>
 
-            <motion.button
-              whileHover={reduced ? undefined : { scale: 1.015 }}
-              whileTap={reduced ? undefined : { scale: 0.98 }}
+            <button
               type="submit"
               disabled={loading || demoLoading}
               data-testid="login-submit"
@@ -226,7 +208,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
               )}
               <span>{loading ? 'Starting Scooter...' : t.signIn}</span>
               <ArrowRight className="h-4 w-4" />
-            </motion.button>
+            </button>
           </form>
 
           <div className="my-4 flex items-center gap-3 text-xs text-slate-400">
@@ -235,9 +217,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
             <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
           </div>
 
-          <motion.button
-            whileHover={reduced ? undefined : { scale: 1.01 }}
-            whileTap={reduced ? undefined : { scale: 0.985 }}
+          <button
             type="button"
             disabled={googleLoading}
             onClick={onGoogleClick}
@@ -253,7 +233,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({
             <span>
               {googleLoading ? 'Connecting Google...' : oauthConfigured ? 'Continue with Google' : 'Continue with Google'}
             </span>
-          </motion.button>
+          </button>
 
           {/* Instant Google Account Picker Drawer */}
           {googleSheetOpen && (
@@ -354,6 +334,6 @@ export const LoginCard: React.FC<LoginCardProps> = ({
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   );
 };
